@@ -13,12 +13,14 @@ const { ethereum } = window as WindowWithEthereum;
 
 
 interface Transaction {
+    id: number,
+    // url: str;
     addressTo: string;
     addressFrom: string;
     timestamp: string;
     message: string;
     keyword: string;
-    amount: number;
+    amount: string;
 }
 
 interface TransactionsContextProps {
@@ -40,15 +42,8 @@ interface TransactionsContextProps {
 
 export const TransactionContext = createContext<TransactionsContextProps | undefined>(undefined);
 
-// const getEthereumContract = () => {
-//     // const provider = new ethers.providers.Web3Providerethereum;
-//     const provider = new ethers.BrowserProvider(ethereum);
-//     const signer = provider.getSigner();
-//     const transactionsContract = new ethers.Contract(contractAddress, contractABI, signer);
-//     console.log(provider, signer, transactionsContract)
 
-// }
-const createEthereumContract = (): ethers.Contract => {
+const createEthereumContract = () => {
     // const provider = new ethers.providers.Web3Providerethereum;
     const provider = new ethers.BrowserProvider(ethereum);
     const signer = provider.getSigner();
@@ -71,7 +66,15 @@ export const TransactionsProvider: React.FC<TransactionsProviderProps> = ({ chil
     const [currentAccount, setCurrentAccount] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [transactionCount, setTransactionCount] = useState<number | null>(parseInt(localStorage.getItem("transactionCount") || '0', 10));
-    const [transactions, setTransactions] = useState<Transaction[]>([]);
+    const [transactions, setTransactions] = useState<Transaction[]>([{
+        id: 1,
+        url: "https://metro.co.uk/wp-content/uploads/2015/05/pokemon_crying.gif?quality=90&strip=all&zoom=1&resize=500%2C284",
+        message: "",
+        timestamp: "12/21/2021, 4:33:21 PM",
+        addressFrom: "0xCF8e569A97C423952DdFf902375C7C76549A6A90",
+        amount: "0.01",
+        addressTo: "0x8aa395Ab97837576aF9cd6946C79024ef1acfdbE",
+    }]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>, name: string): void => {
         setformData((prevState) => ({ ...prevState, [name]: e.target.value }));
@@ -81,8 +84,9 @@ export const TransactionsProvider: React.FC<TransactionsProviderProps> = ({ chil
         try {
             if (ethereum) {
                 const transactionsContract = createEthereumContract();
-
+                console.log(transactionsContract);
                 const availableTransactions = await transactionsContract.getAllTransactions();
+                console.log("log" + availableTransactions);
 
                 const structuredTransactions = availableTransactions.map((transaction: any) => ({
                     addressTo: transaction.receiver,

@@ -2,8 +2,74 @@
 
 pragma solidity ^0.8.9;
 
+// contract Transactions {
+//     uint256 transactionCount;
+//     event Transfer(
+//         address from,
+//         address receiver,
+//         uint amount,
+//         string message,
+//         uint256 timestamp,
+//         string keyword
+//     );
+
+//     struct TransferStruct {
+//         address sender;
+//         address receiver;
+//         uint amount;
+//         string message;
+//         uint256 timestamp;
+//         string keyword;
+//     }
+
+//     TransferStruct[] transactions;
+
+//     function addToBLockchain(
+//         address payable receiver,
+//         uint amount,
+//         string memory message,
+//         string memory keyword
+//     ) public {
+//         transactionCount += 1;
+//         transactions.push(
+//             TransferStruct(
+//                 msg.sender,
+//                 receiver,
+//                 amount,
+//                 message,
+//                 block.timestamp,
+//                 keyword
+//             )
+//         );
+
+//         emit Transfer(
+//             msg.sender,
+//             receiver,
+//             amount,
+//             message,
+//             block.timestamp,
+//             keyword
+//         );
+//     }
+
+//     function getAllTransactions()
+//         public
+//         view
+//         returns (TransferStruct[] memory)
+//     {
+//         return transactions;
+//     }
+
+//     function getTransactionCount(uint256) public view returns (uint256) {
+//         // return transactionCount;
+//     }
+// }
+
+import "hardhat/console.sol";
+
 contract Transactions {
     uint256 transactionCount;
+
     event Transfer(
         address from,
         address receiver,
@@ -24,7 +90,7 @@ contract Transactions {
 
     TransferStruct[] transactions;
 
-    function addToBLockchain(
+    function addToBlockchain(
         address payable receiver,
         uint amount,
         string memory message,
@@ -41,7 +107,7 @@ contract Transactions {
                 keyword
             )
         );
-
+        console.log(Transactions);
         emit Transfer(
             msg.sender,
             receiver,
@@ -56,9 +122,11 @@ contract Transactions {
         public
         view
         returns (TransferStruct[] memory)
-    {}
+    {
+        return transactions;
+    }
 
-    function getTransactionCount(uint256) public view returns (uint256) {
-        // return transactionCount;
+    function getTransactionCount() public view returns (uint256) {
+        return transactionCount;
     }
 }
